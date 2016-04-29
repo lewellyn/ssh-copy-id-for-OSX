@@ -33,15 +33,28 @@ if [ -z "`eval $GET_ID`" ]; then
   exit 1
 fi
 
+if [ "-p" = "$1" ]; then
+  shift
+  if [ $# -gt 1 ] && echo $1 | grep -cv @ >/dev/null && [ `echo "$1 < 1" | bc` -eq 0 ]; then
+    # Make sure there's enough arguments and that the port is validly non-zero
+    # None of these variables require quoting
+    port="-p $1"
+    shift
+  else
+    # Consume all arguments to print usage
+    shift $#
+  fi
+fi
+
 if [ "$#" -lt 1 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-  echo "Usage: $0 [-i [identity_file]] [user@]machine" >&2
+  echo "Usage: $0 [-i [identity_file]] [-p port] [user@]machine" >&2
   exit 1
 fi
 
-{ eval "$GET_ID" ; } | ssh $1 "umask 077; test -d .ssh || mkdir .ssh ; cat >> .ssh/authorized_keys; test -x /sbin/restorecon && /sbin/restorecon .ssh .ssh/authorized_keys" || exit 1
+{ eval "$GET_ID" ; } | ssh $port $1 "umask 077; test -d .ssh || mkdir .ssh ; cat >> .ssh/authorized_keys; test -x /sbin/restorecon && /sbin/restorecon .ssh .ssh/authorized_keys" || exit 1
 
 cat <<EOF
-Now try logging into the machine, with "ssh '$1'", and check in:
+Now try logging into the machine, with "ssh $port '$1'", and check in:
 
   .ssh/authorized_keys
 
