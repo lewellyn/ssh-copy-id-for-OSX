@@ -1,11 +1,12 @@
 #!/bin/sh
 # Installs ssh-copy-id
 # Usage:
-# install.sh [-u | -h | -o]
+# install.sh [-u | -h | -o | -s]
 # Options:
 # -u	Install into /usr/local/bin (DEFAULT)
 # -h	Install into $HOME/bin
 # -o	Install into /opt/local/bin
+# -s	Install into /usr/bin
 
 installpath=/usr/local
 if [ "$1" == "-h" ]; then
@@ -13,6 +14,9 @@ if [ "$1" == "-h" ]; then
 fi
 if [ "$1" == "-o" ]; then
 	installpath=/opt/local
+fi
+if [ "$1" == "-s" ]; then
+	installpath=/usr
 fi
 
 if [ "$installpath" != "$HOME" ] && [[ $(id -u) != 0 ]]; then

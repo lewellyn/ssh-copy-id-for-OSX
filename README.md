@@ -14,13 +14,14 @@ OR
 
 #### Usage:
 
-`install.sh [-u | -h | -o]`
+`install.sh [-u | -h | -o | -s]`
 
 #### Options:
 
 * `-u`	Install into /usr/local/bin **(DEFAULT)**
 * `-h`	Install into $HOME/bin
 * `-o`	Install into /opt/local/bin
+* `-s`	Install into /usr/bin
 
 ## SSH-COPY-ID [man][man]
 
