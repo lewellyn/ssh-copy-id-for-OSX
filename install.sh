@@ -1,7 +1,21 @@
 #!/bin/sh
-# Installs ssh-copy-id into /usr/local/bin
+# Installs ssh-copy-id
+# Usage:
+# install.sh [-u | -h | -o]
+# Options:
+# -u	Install into /usr/local/bin (DEFAULT)
+# -h	Install into $HOME/bin
+# -o	Install into /opt/local/bin
 
-if [[ $(id -u) != 0 ]]; then
+installpath=/usr/local
+if [ "$1" == "-h" ]; then
+	installpath="$HOME"
+fi
+if [ "$1" == "-o" ]; then
+	installpath=/opt/local
+fi
+
+if [ "$installpath" != "$HOME" ] && [[ $(id -u) != 0 ]]; then
 	if command -v sudo >/dev/null 2>&1; then
 		SUDO="sudo"
 	else
@@ -11,9 +25,9 @@ if [[ $(id -u) != 0 ]]; then
 fi
 
 if git ls-files >& /dev/null &&  [[ -f ssh-copy-id.sh ]]; then
-	$SUDO cp ssh-copy-id.sh /usr/local/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into /usr/local/bin."; exit 1; }
+	$SUDO cp ssh-copy-id.sh "$installpath"/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into $installpath/bin."; exit 1; }
 else
-	$SUDO curl -L https://raw.githubusercontent.com/beautifulcode/ssh-copy-id-for-OSX/master/ssh-copy-id.sh -o /usr/local/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into /usr/local/bin."; exit 1; }
-	$SUDO chmod +x /usr/local/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into /usr/local/bin."; exit 1; }
+	$SUDO curl -L https://raw.githubusercontent.com/beautifulcode/ssh-copy-id-for-OSX/master/ssh-copy-id.sh -o "$installpath"/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into $installpath/bin."; exit 1; }
+	$SUDO chmod +x "$installpath"/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into $installpath/bin."; exit 1; }
 fi
-echo "Installed ssh-copy-id into /usr/local/bin."; exit 0;
+echo "Installed ssh-copy-id into $installpath/bin."; exit 0;
