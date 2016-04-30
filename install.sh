@@ -31,7 +31,7 @@ fi
 if git ls-files >& /dev/null &&  [[ -f ssh-copy-id.sh ]]; then
 	$SUDO cp ssh-copy-id.sh "$installpath"/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into $installpath/bin."; exit 1; }
 else
-	$SUDO curl -L https://raw.githubusercontent.com/beautifulcode/ssh-copy-id-for-OSX/master/ssh-copy-id.sh -o "$installpath"/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into $installpath/bin."; exit 1; }
+	$SUDO curl -L https://raw.githubusercontent.com/lewellyn/ssh-copy-id-for-OSX/master/ssh-copy-id.sh -o "$installpath"/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into $installpath/bin."; exit 1; }
 	$SUDO chmod +x "$installpath"/bin/ssh-copy-id || { echo "Failed to install ssh-copy-id into $installpath/bin."; exit 1; }
 fi
 echo "Installed ssh-copy-id into $installpath/bin."; exit 0;
